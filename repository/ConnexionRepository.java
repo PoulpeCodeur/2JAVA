@@ -10,17 +10,17 @@ public class ConnexionRepository {
     private final static String PASSWORD = "root";
 
     public static Connection getConnection() {
-        Connection conn = null;
+        Connection connexion = null;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            connexion = DriverManager.getConnection(URL, USERNAME, PASSWORD);
         } catch (ClassNotFoundException e) {
-            System.out.println("Impossible de charger le driver MySQL.");
+            System.out.println("Impossible de charger le driver.");
             e.printStackTrace();
         } catch (SQLException e) {
             System.out.println("Impossible de se connecter à la base de données.");
             e.printStackTrace();
         }
-        return conn;
+        return connexion;
     }
 }

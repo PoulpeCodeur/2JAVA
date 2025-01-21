@@ -1,8 +1,8 @@
 package service;
+
 import java.util.Scanner;
 
 public class FirstMenu {
-
     public static void main(String[] args) {
         showMenu();
     }
@@ -20,14 +20,13 @@ public class FirstMenu {
 
         switch (choice) {
             case 1:
-                System.out.println("Connection");
+                System.out.println("Connexion en cours...");
                 break;
             case 2:
-                System.out.println("S'inscrire");
+                Register.registerUser();
                 break;
             default:
-                throw new IllegalStateException("Valeur innatendue :  " + choice);
+                throw new IllegalStateException("Valeur inattendue : " + choice);
         }
     }
-
 }
