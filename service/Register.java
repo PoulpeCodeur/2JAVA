@@ -2,6 +2,8 @@ package service;
 
 import repository.WhitelisteRepository;
 import repository.UsersRepository;
+import service.Register;
+
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,6 +13,7 @@ import java.util.Scanner;
 
 public class Register {
     public static void registerUser() {
+        FirstMenu firstMenu = new FirstMenu();
         Scanner scanner = new Scanner(System.in);
         System.out.println(" --- Inscription --- ");
 
@@ -19,6 +22,7 @@ public class Register {
         WhitelisteRepository whitelisteRepository = new WhitelisteRepository();
         if (!whitelisteRepository.checkWhitelist(email)) {
             System.out.println("Votre email n'a pas l'autorisation de s'inscrire. Contactez votre administrateur.");
+            firstMenu.showMenu();
             return;
         }
 
@@ -37,6 +41,7 @@ public class Register {
         UsersRepository usersRepository = new UsersRepository();
         if (usersRepository.saveUser(email, firstName, lastName, pseudo, password)) {
             System.out.println("Votre inscription à été prise en compte, vous pouvez désormais vous connecter");
+            firstMenu.showMenu();
         } else {
             System.out.println("Une erreur s'est déroulé lors de l'inscription.");
         }
