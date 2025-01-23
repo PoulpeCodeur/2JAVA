@@ -20,7 +20,7 @@ public class FirstMenu {
 
         switch (choice) {
             case 1:
-                System.out.println("Connexion en cours...");
+                Login.Login();
                 break;
             case 2:
                 Register.registerUser();
