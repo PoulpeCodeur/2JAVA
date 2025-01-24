@@ -20,7 +20,8 @@ public class FirstMenu {
 
         switch (choice) {
             case 1:
-                Login.Login();
+
+                Login.performLogin();
                 break;
             case 2:
                 Register.registerUser();
