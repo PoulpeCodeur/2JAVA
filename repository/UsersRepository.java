@@ -2,6 +2,7 @@ package repository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import repository.ConnexionRepository;
 
@@ -31,4 +32,52 @@ public class UsersRepository {
         }
     }
 
+    public static boolean authenticate(String email, String password) {
+        String query = "SELECT password FROM USERS WHERE email = ?";
+        try (Connection connexion = ConnexionRepository.getConnection();
+             PreparedStatement preparedStatement = connexion.prepareStatement(query)) {
+            preparedStatement.setString(1, email);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                String storedPassword = resultSet.getString("password");
+                return password.equals(storedPassword);
+            } else {
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static String getRole(String email) {
+        String query = "SELECT ROLE FROM USERS WHERE email = ?";
+        try(Connection connection = ConnexionRepository.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, email);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                return resultSet.getString("ROLE");
+            }else {return null;}
+    }catch (SQLException e) {
+        e.printStackTrace();
+        return null;}
+    }
+
+    public static String getPseudo(String email) {
+        String query = "SELECT PSEUDO FROM USERS WHERE email = ?";
+        try (Connection connection = ConnexionRepository.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, email);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getString("PSEUDO");
+            }else {return null;}
+
+        }catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }
