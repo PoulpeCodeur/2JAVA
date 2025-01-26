@@ -20,7 +20,6 @@ public class FirstMenu {
 
         switch (choice) {
             case 1:
-
                 Login.performLogin();
                 break;
             case 2:

@@ -1,6 +1,7 @@
 package service;
 
 import repository.UsersRepository;
+import repository.ItemsRepository;
 
 import java.util.Scanner;
 
@@ -9,8 +10,13 @@ public class AdminMenu {
     }
 
     public void menu(String email) {
+
         UsersRepository usersRepository = new UsersRepository();
+        ItemsRepository itemsRepository = new ItemsRepository();
+        ItemsService itemsService = new ItemsService(itemsRepository);
+
         String pseudo=usersRepository.getPseudo(email);
+
         System.out.println("Bienvenue ADMIN " + pseudo);
         System.out.println("Choissier ce que vous shouaiter faire");
         System.out.println("1 Créer un produit");
@@ -25,11 +31,13 @@ public class AdminMenu {
         System.out.println("7 Suprimer utilisateur");
         System.out.println("8 Supprimer produit");
         System.out.println("9 Supprimer Shops");
+
         Scanner scanner = new Scanner(System.in);
         int option = scanner.nextInt();
+
         switch (option){
             case 1:
-                System.out.println("FEATURE EN COURT DE DEV");
+                createProduct(itemsService);
                 break;
             case 2:
                 System.out.println("FEATURE EN COURT DE DEV");
@@ -55,6 +63,30 @@ public class AdminMenu {
             case 9:
                 System.out.println("FEATURE EN COURT DE DEV");
                 break;
+        }
+    }
+
+    private void createProduct(ItemsService itemsService) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Créer un produit :");
+
+        System.out.print("Nom du produit : ");
+        String name = scanner.nextLine();
+
+        System.out.print("Prix du produit : ");
+        double price = scanner.nextDouble();
+
+        System.out.print("Quantité du produit : ");
+        int quantity = scanner.nextInt();
+
+        System.out.print("ID d'inventaire : ");
+        int inventoryId = scanner.nextInt();
+
+        try {
+            itemsService.createNewItems(name, price, quantity, inventoryId);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Erreur : " + e.getMessage());
         }
     }
 }
