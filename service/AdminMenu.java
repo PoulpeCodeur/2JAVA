@@ -24,9 +24,9 @@ public class AdminMenu {
         System.out.println("1 Créer un produit");
         System.out.println("2 Créer un Shop");
         System.out.println("3 Créer un utilisateur");
-        //Gestion  produit changer le prix, le nom
+        //Gestion produit changer le prix, le nom
         System.out.println("4 Gestion produit");
-        //Gestion utilisateur changer le nom , l'email , pseudo , le role , mdp
+        //Gestion utilisateur changer le nom, l'email, pseudo, le role, mdp
         System.out.println("5 Gestion utilisateur");
         //Gestion shop ajouter ou suprimer un employer d'un shop , ajouter un produit a un shop ou gerere les stock du shop
         System.out.println("6 Gestion Shops");
@@ -60,7 +60,7 @@ public class AdminMenu {
                 System.out.println("FEATURE EN COURT DE DEV");
                 break;
             case 8:
-                System.out.println("FEATURE EN COURT DE DEV");
+                deleteItem();
                 break;
             case 9:
                 System.out.println("FEATURE EN COURT DE DEV");
@@ -103,6 +103,22 @@ public class AdminMenu {
         StoresRepository storesRepository = new StoresRepository();
         storesRepository.createStore(userId, name);
 
+    }
 
+    private void deleteItem() throws SQLException {
+        Scanner scanner = new Scanner(System.in);
+        ItemsRepository itemsRepository = new ItemsRepository();
+
+        System.out.println("Liste des produits :");
+        ItemsRepository.listProducts();
+
+        System.out.println("ID du produit à supprimer : ");
+        int id = scanner.nextInt();
+        itemsRepository.deleteItem(id);
+
+        System.out.println("Le produit à bien été supprimé");
+
+        System.out.println("Liste des produits après la suppression :");
+        itemsRepository.listProducts();
     }
 }
