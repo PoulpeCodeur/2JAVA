@@ -1,15 +1,17 @@
 package service;
 
+import repository.StoresRepository;
 import repository.UsersRepository;
 import repository.ItemsRepository;
 
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class AdminMenu {
     public AdminMenu() {
     }
 
-    public void menu(String email) {
+    public void menu(String email) throws SQLException {
 
         UsersRepository usersRepository = new UsersRepository();
         ItemsRepository itemsRepository = new ItemsRepository();
@@ -37,10 +39,10 @@ public class AdminMenu {
 
         switch (option){
             case 1:
-                createProduct(itemsService);
+                createProduct(email);
                 break;
             case 2:
-                System.out.println("FEATURE EN COURT DE DEV");
+                createShop(email);
                 break;
             case 3:
                 System.out.println("FEATURE EN COURT DE DEV");
@@ -66,7 +68,7 @@ public class AdminMenu {
         }
     }
 
-    private void createProduct(ItemsService itemsService) {
+    private void createProduct(String email) {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Créer un produit :");
@@ -80,13 +82,27 @@ public class AdminMenu {
         System.out.print("Quantité du produit : ");
         int quantity = scanner.nextInt();
 
-        System.out.print("ID d'inventaire : ");
-        int inventoryId = scanner.nextInt();
-
         try {
-            itemsService.createNewItems(name, price, quantity, inventoryId);
+            ItemsService itemsService = new ItemsService(new ItemsRepository());
+            itemsService.CheckItems(name, price, quantity);
+            menu(email);
+
         } catch (IllegalArgumentException e) {
             System.out.println("Erreur : " + e.getMessage());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
+    }
+    private void createShop(String email) throws SQLException {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Veuillez rentreé les parametre de votre shop");
+        System.out.print("Nom du shop : ");
+        String name = scanner.nextLine();
+        UsersRepository usersRepository = new UsersRepository();
+        int userId=usersRepository.getUserId(email);
+        StoresRepository storesRepository = new StoresRepository();
+        storesRepository.createStore(userId, name);
+
+
     }
 }

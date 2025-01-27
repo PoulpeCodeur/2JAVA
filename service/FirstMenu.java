@@ -1,13 +1,14 @@
 package service;
 
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class FirstMenu {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         showMenu();
     }
 
-    public static void showMenu() {
+    public static void showMenu() throws SQLException {
         Scanner scanner = new Scanner(System.in);
         int choice;
 

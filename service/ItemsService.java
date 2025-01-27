@@ -2,6 +2,8 @@ package service;
 
 import repository.ItemsRepository;
 
+import java.sql.SQLException;
+
 public class ItemsService {
     private final ItemsRepository itemsRepository;
 
@@ -9,7 +11,7 @@ public class ItemsService {
         this.itemsRepository = itemsRepository;
     }
 
-    public void createNewItems(String name, double price, int quantity, int inventoryId) {
+    public void CheckItems(String name, double price, int quantity) throws SQLException {
         if (name == null || name.isEmpty()) {
             throw new IllegalArgumentException("Un nom est obligatoire pour créer l'article");
         }
@@ -22,11 +24,7 @@ public class ItemsService {
             throw new IllegalArgumentException("La quantité ne peux pas être inférieur à 0");
         }
 
-        Items newItem = new Items(name, price, quantity);
-        newItem.setInventory_id(inventoryId);
-
-        itemsRepository.addItems(newItem);
-        System.out.println("L'article à été ajouté avec succès !");
-
+        ItemsRepository itemsRepository = new ItemsRepository();
+        itemsRepository.CreatItems(name,price,quantity);
     }
 }

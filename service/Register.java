@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import java.util.Scanner;
 
 public class Register {
-    public static void registerUser() {
+    public static void registerUser() throws SQLException {
         FirstMenu firstMenu = new FirstMenu();
         Scanner scanner = new Scanner(System.in);
         System.out.println(" --- Inscription --- ");

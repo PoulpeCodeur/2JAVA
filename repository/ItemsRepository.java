@@ -1,28 +1,28 @@
 package repository;
 
-import service.Items;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class ItemsRepository {
-    private final Connection connection;
+    public ItemsRepository() {}
 
-    public ItemsRepository() {
-        this.connection = ConnexionRepository.getConnection();
-    }
+    public void CreatItems(String name, double price , int quantity) throws SQLException {
+        String query = "INSERT INTO ITEMS (NAME, PRICE, QUANTITY,SHOP) VALUES (?,?,?,FALSE)";
 
-    public boolean addItems(Items items) {
-        String sql = "INSERT INTO ITEMS (NAME, PRICE, QUANTITY) VALUES (?, ?, ?)";
-        try (PreparedStatement statement = connection.prepareStatement(sql)){
-            statement.setString(1, items.getName());
-            statement.setDouble(2, items.getPrice());
-            statement.setInt(3, items.getQuantity());
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        try(Connection connexion = ConnexionRepository.getConnection();
+             PreparedStatement preparedStatement = connexion.prepareStatement(query)) {
+            preparedStatement.setString(1, name);
+            preparedStatement.setDouble(2, price);
+            preparedStatement.setInt(3, quantity);
+            preparedStatement.executeUpdate();
+
+            System.out.println("L'article à été créé avec succès !");
+            System.out.println("Mais n'est pas relier a un shop");
+
+
+        }catch (Exception e){
+            e.printStackTrace();
         }
-        return true;
     }
 }

@@ -1,13 +1,15 @@
 package service;
 
 import repository.UsersRepository;
+
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class Login {
     public Login() {
     }
 
-    public static void performLogin() {
+    public static void performLogin() throws SQLException {
         Scanner scanner = new Scanner(System.in);
         System.out.println(" --- Connexion --- ");
 

@@ -80,4 +80,20 @@ public class UsersRepository {
             return null;
         }
     }
+
+    public static int getUserId(String email){
+        String query = "SELECT ID FROM USERS WHERE email = ?";
+        try(Connection connection = ConnexionRepository.getConnection();
+        PreparedStatement preparedStatement=connection.prepareStatement(query)){
+            preparedStatement.setString(1, email);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt("ID");
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+            return 0;
+        }
+        return 0;
+    };
 }
