@@ -21,7 +21,8 @@ public class FirstMenu {
 
         switch (choice) {
             case 1:
-                Login.performLogin();
+                Login login = new Login();
+                login.performLogin();
                 break;
             case 2:
                 Register.registerUser();

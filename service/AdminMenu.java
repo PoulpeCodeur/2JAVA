@@ -3,6 +3,7 @@ package service;
 import repository.StoresRepository;
 import repository.UsersRepository;
 import repository.ItemsRepository;
+import repository.WhitelisteRepository;
 
 import java.sql.SQLException;
 import java.util.Scanner;
@@ -103,6 +104,17 @@ public class AdminMenu {
         StoresRepository storesRepository = new StoresRepository();
         storesRepository.createStore(userId, name);
 
+    }
+
+    private void createUser(String email) throws SQLException {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Veuillez entrer l'email du user pour la whiteliste");
+        System.out.println("Email du user : ");
+        String mail = scanner.nextLine();
+        UsersRepository usersRepository = new UsersRepository();
+        int userId=usersRepository.getUserId(email);
+        WhitelisteRepository whitelisteRepository = new WhitelisteRepository();
+        whitelisteRepository.createWhitelist(mail,userId);
     }
 
     private void deleteItem() throws SQLException {
