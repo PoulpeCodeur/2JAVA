@@ -54,4 +54,18 @@ public class WhitelisteRepository {
 
         }
     }
+
+    public static void createWhitelist(String mail, int userId) {
+        String query = "INSERT INTO WHITELIST (EMAIL,CONNEXION, ADDED_BY) VALUES (?, ?, FALSE)";
+        try(Connection connexion = ConnexionRepository.getConnection();
+            PreparedStatement preparedStatement = connexion.prepareStatement(query)) {
+            preparedStatement.setString(1, mail);
+            preparedStatement.setInt(2, userId);
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 }
