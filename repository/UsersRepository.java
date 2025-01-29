@@ -95,5 +95,45 @@ public class UsersRepository {
             return 0;
         }
         return 0;
-    };
+    }
+
+    public static void listUsers() throws SQLException {
+        String query = "SELECT * FROM USERS";
+
+        try (Connection connexion = ConnexionRepository.getConnection();
+             PreparedStatement preparedStatement = connexion.prepareStatement(query);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+
+            while (resultSet.next()) {
+                int id = resultSet.getInt("ID");
+                String email = resultSet.getString("EMAIL");
+                String firstName = resultSet.getString("FIRST_NAME");
+                String lastName = resultSet.getString("LAST_NAME");
+                String pseudo = resultSet.getString("PSEUDO");
+                String role = resultSet.getString("ROLE");
+                String createdAt = resultSet.getString("CREATED_AT");
+
+                System.out.println("ID : " + id + ", Email : " + email +
+                        ", Prénom : " + firstName + ", Nom : " + lastName +
+                        ", Pseudo : " + pseudo + ", Rôle : " + role +
+                        ", Créé le : " + createdAt);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    public void deleteUsers(int id){
+        String query = "DELETE FROM USERS WHERE ID = ?";
+        try (Connection connexion = ConnexionRepository.getConnection()){
+            PreparedStatement preparedStatement = connexion.prepareStatement(query);
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+
+    }
 }

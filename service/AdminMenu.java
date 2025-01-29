@@ -46,7 +46,7 @@ public class AdminMenu {
                 createShop(email);
                 break;
             case 3:
-                System.out.println("FEATURE EN COURT DE DEV");
+                createUser(email);
                 break;
             case 4:
                 System.out.println("FEATURE EN COURT DE DEV");
@@ -58,7 +58,7 @@ public class AdminMenu {
                 System.out.println("FEATURE EN COURT DE DEV");
                 break;
             case 7:
-                System.out.println("FEATURE EN COURT DE DEV");
+                deleteUsers();
                 break;
             case 8:
                 deleteItem();
@@ -115,6 +115,25 @@ public class AdminMenu {
         int userId=usersRepository.getUserId(email);
         WhitelisteRepository whitelisteRepository = new WhitelisteRepository();
         whitelisteRepository.createWhitelist(mail,userId);
+    }
+
+
+    private void deleteUsers() throws SQLException {
+        Scanner scanner = new Scanner(System.in);
+        UsersRepository usersRepository = new UsersRepository();
+
+        System.out.println("Liste des utilisateurs :");
+        usersRepository.listUsers();
+
+        System.out.println("ID de l'utilisateur à supprimer : ");
+        int id = scanner.nextInt();
+
+        usersRepository.deleteUsers(id);
+
+        System.out.println("L'utilisateur a bien été supprimé.");
+
+        System.out.println("Liste des utilisateurs après la suppression : ");
+        usersRepository.listUsers();
     }
 
     private void deleteItem() throws SQLException {
