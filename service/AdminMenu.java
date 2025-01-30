@@ -152,4 +152,19 @@ public class AdminMenu {
         System.out.println("Liste des produits après la suppression :");
         itemsRepository.listProducts();
     }
+
+    private void ProductMenu() throws SQLException {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Qu'est ce que vous souhaiter faire ?");
+        System.out.println("\n1- changer le nom d'un produit");
+        System.out.println("2- changer le prix d'un produit");
+
+        int option = scanner.nextInt();
+        switch (option){
+            case 1:
+                break;
+            case 2:
+                break;
+        }
+    }
 }
