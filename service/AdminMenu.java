@@ -225,6 +225,9 @@ public class AdminMenu {
         System.out.println("====================================");
         System.out.println("1 - Changer le nom d'un produit");
         System.out.println("2 - Changer le prix d'un produit");
+        ItemsService itemsService = new ItemsService();
+        ItemsRepository itemsRepository = new ItemsRepository();
+        List<ItemsService> listeItems=itemsRepository.getAtributItems();
 
         int option = scanner.nextInt();
         scanner.nextLine();
