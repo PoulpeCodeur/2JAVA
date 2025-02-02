@@ -125,6 +125,28 @@ public class UsersRepository {
         }
     }
 
+    public void updateUser(int userId, String newEmail, String newFirstName, String newLastName, String newPseudo) {
+        String query = "UPDATE USERS SET email = ?, first_name = ?, last_name = ?, pseudo = ? WHERE ID = ?";
+        try (Connection connection = ConnexionRepository.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setString(1, newEmail);
+            preparedStatement.setString(2, newFirstName);
+            preparedStatement.setString(3, newLastName);
+            preparedStatement.setString(4, newPseudo);
+            preparedStatement.setInt(5, userId);
+
+            int rowsUpdated = preparedStatement.executeUpdate();
+            if (rowsUpdated > 0) {
+                System.out.println("Mise à jour réussie !");
+            } else {
+                System.out.println("Échec de la mise à jour.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void deleteUsers(int id){
         String query = "DELETE FROM USERS WHERE ID = ?";
         try (Connection connexion = ConnexionRepository.getConnection()){
