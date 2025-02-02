@@ -6,6 +6,7 @@ import repository.ItemsRepository;
 import repository.WhitelisteRepository;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Scanner;
 
 public class AdminMenu {
@@ -15,8 +16,6 @@ public class AdminMenu {
     public void menu(String email) throws SQLException {
 
         UsersRepository usersRepository = new UsersRepository();
-        ItemsRepository itemsRepository = new ItemsRepository();
-        ItemsService itemsService = new ItemsService(itemsRepository);
 
         String pseudo=usersRepository.getPseudo(email);
 
@@ -49,7 +48,7 @@ public class AdminMenu {
                 createUser(email);
                 break;
             case 4:
-                System.out.println("FEATURE EN COURT DE DEV");
+                ProductMenu();
                 break;
             case 5:
                 System.out.println("FEATURE EN COURT DE DEV");
@@ -84,7 +83,7 @@ public class AdminMenu {
         int quantity = scanner.nextInt();
 
         try {
-            ItemsService itemsService = new ItemsService(new ItemsRepository());
+            ItemsService itemsService = new ItemsService();
             itemsService.CheckItems(name, price, quantity);
             menu(email);
 
@@ -157,13 +156,34 @@ public class AdminMenu {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Qu'est ce que vous souhaiter faire ?");
         System.out.println("\n1- changer le nom d'un produit");
-        System.out.println("2- changer le prix d'un produit");
+        System.out.println("2- changer le prix d'un produit"+"\n");
+        ItemsService itemsService = new ItemsService();
+        ItemsRepository itemsRepository = new ItemsRepository();
+        List<ItemsService> listeItems=itemsRepository.getAtributItems();
+
 
         int option = scanner.nextInt();
+        scanner.nextLine();
+
         switch (option){
             case 1:
+                ItemsService item=itemsService.DisplayItems(listeItems);
+                String name=item.getName();
+                System.out.println("Veuillez rentrez le nouveaux nom du produit :");
+                String newName = scanner.nextLine();
+
+                ItemsRepository itemRepository = new ItemsRepository();
+                itemRepository.updateName(name,newName);
+
                 break;
             case 2:
+                ItemsService items=itemsService.DisplayItems(listeItems);
+                String names=items.getName();
+                System.out.println("Veuillez rentrez le nouveaux prix du produit :");
+                int newPrice = scanner.nextInt();
+
+                ItemsRepository itemsRepository1 = new ItemsRepository();
+                itemsRepository1.updatePrice(newPrice,names);
                 break;
         }
     }
