@@ -6,6 +6,7 @@ import repository.ItemsRepository;
 import repository.WhitelisteRepository;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Scanner;
 
 public class AdminMenu {
@@ -15,8 +16,6 @@ public class AdminMenu {
     public void menu(String email) throws SQLException {
 
         UsersRepository usersRepository = new UsersRepository();
-        ItemsRepository itemsRepository = new ItemsRepository();
-        ItemsService itemsService = new ItemsService(itemsRepository);
 
         String pseudo = usersRepository.getPseudo(email);
 
@@ -56,7 +55,7 @@ public class AdminMenu {
                 menu(email);
                 break;
             case 4:
-                System.out.println("Feature en cours de développement...");
+                ProductMenu();
                 break;
             case 5:
                 System.out.println("Feature en cours de développement...");
@@ -107,7 +106,7 @@ public class AdminMenu {
         int quantity = scanner.nextInt();
 
         try {
-            ItemsService itemsService = new ItemsService(new ItemsRepository());
+            ItemsService itemsService = new ItemsService();
             itemsService.CheckItems(name, price, quantity);
             menu(email);
 
@@ -228,10 +227,26 @@ public class AdminMenu {
         System.out.println("2 - Changer le prix d'un produit");
 
         int option = scanner.nextInt();
+        scanner.nextLine();
         switch (option) {
             case 1:
+                ItemsService item=itemsService.DisplayItems(listeItems);
+                String name=item.getName();
+                System.out.println("Veuillez rentrez le nouveaux nom du produit :");
+                String newName = scanner.nextLine();
+
+                ItemsRepository itemRepository = new ItemsRepository();
+                itemRepository.updateName(name,newName);
+
                 break;
             case 2:
+                ItemsService items=itemsService.DisplayItems(listeItems);
+                String names=items.getName();
+                System.out.println("Veuillez rentrez le nouveaux prix du produit :");
+                int newPrice = scanner.nextInt();
+
+                ItemsRepository itemsRepository1 = new ItemsRepository();
+                itemsRepository1.updatePrice(newPrice,names);
                 break;
             default:
                 System.out.println("Option invalide, veuillez réessayer.");
