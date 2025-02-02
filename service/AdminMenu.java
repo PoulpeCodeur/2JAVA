@@ -64,7 +64,7 @@ public class AdminMenu {
                 deleteItem();
                 break;
             case 9:
-                System.out.println("FEATURE EN COURT DE DEV");
+                deleteStore();
                 break;
         }
     }
@@ -151,6 +151,23 @@ public class AdminMenu {
 
         System.out.println("Liste des produits après la suppression :");
         itemsRepository.listProducts();
+    }
+
+    private void deleteStore() throws SQLException {
+        Scanner scanner = new Scanner(System.in);
+        StoresRepository storesRepository = new StoresRepository();
+
+        System.out.println("Liste des magasins :");
+        StoresRepository.listStores();
+
+        System.out.println("Id du magasin à supprimer : ");
+        int id = scanner.nextInt();
+        storesRepository.deleteStore(id);
+
+        System.out.println("Le magasin a bien été supprimé.");
+
+        System.out.println("Liste des magasins après la suppression :");
+        StoresRepository.listStores();
     }
 
     private void ProductMenu() throws SQLException {
