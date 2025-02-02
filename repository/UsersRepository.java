@@ -1,10 +1,6 @@
 package repository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import repository.ConnexionRepository;
+import java.sql.*;
 
 public class UsersRepository {
 
@@ -20,11 +16,14 @@ public class UsersRepository {
             preparedStatement.setString(2, firstName);
             preparedStatement.setString(3, lastName);
             preparedStatement.setString(4, pseudo);
-            //Je vais ajouter un SHA-256 pour hacher les mots de passe
-            // Afin qu'ils ne soient pas en clair
             preparedStatement.setString(5, password);
 
             int rowsInserted = preparedStatement.executeUpdate();
+            if (rowsInserted > 0) {
+                System.out.println("\n====================================");
+                System.out.println("L'utilisateur a été créé avec succès !");
+                System.out.println("====================================\n");
+            }
             return rowsInserted > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -52,45 +51,49 @@ public class UsersRepository {
 
     public static String getRole(String email) {
         String query = "SELECT ROLE FROM USERS WHERE email = ?";
-        try(Connection connection = ConnexionRepository.getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        try (Connection connection = ConnexionRepository.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, email);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
                 return resultSet.getString("ROLE");
-            }else {return null;}
-    }catch (SQLException e) {
-        e.printStackTrace();
-        return null;}
-    }
-
-    public static String getPseudo(String email) {
-        String query = "SELECT PSEUDO FROM USERS WHERE email = ?";
-        try (Connection connection = ConnexionRepository.getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setString(1, email);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                return resultSet.getString("PSEUDO");
-            }else {return null;}
-
-        }catch (Exception e) {
+            } else {
+                return null;
+            }
+        } catch (SQLException e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    public static int getUserId(String email){
+    public static String getPseudo(String email) {
+        String query = "SELECT PSEUDO FROM USERS WHERE email = ?";
+        try (Connection connection = ConnexionRepository.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, email);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getString("PSEUDO");
+            } else {
+                return null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static int getUserId(String email) {
         String query = "SELECT ID FROM USERS WHERE email = ?";
-        try(Connection connection = ConnexionRepository.getConnection();
-        PreparedStatement preparedStatement=connection.prepareStatement(query)){
+        try (Connection connection = ConnexionRepository.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, email);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 return resultSet.getInt("ID");
             }
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             return 0;
         }
@@ -119,6 +122,8 @@ public class UsersRepository {
                         ", Créé le : " + createdAt);
             }
 
+            System.out.println("====================================\n");
+
         } catch (SQLException e) {
             e.printStackTrace();
             throw e;
@@ -138,24 +143,38 @@ public class UsersRepository {
 
             int rowsUpdated = preparedStatement.executeUpdate();
             if (rowsUpdated > 0) {
+                System.out.println("\n====================================");
                 System.out.println("Mise à jour réussie !");
+                System.out.println("====================================\n");
             } else {
+                System.out.println("\n====================================");
                 System.out.println("Échec de la mise à jour.");
+                System.out.println("====================================\n");
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public void deleteUsers(int id){
+    public void deleteUser(int id) {
         String query = "DELETE FROM USERS WHERE ID = ?";
-        try (Connection connexion = ConnexionRepository.getConnection()){
+        try (Connection connexion = ConnexionRepository.getConnection()) {
             PreparedStatement preparedStatement = connexion.prepareStatement(query);
             preparedStatement.setInt(1, id);
-            preparedStatement.executeUpdate();
-        } catch (SQLException e){
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("\n====================================");
+                System.out.println("L'utilisateur avec l'ID " + id + " a été supprimé.");
+                System.out.println("====================================\n");
+            } else {
+                System.out.println("\n====================================");
+                System.out.println("Aucun utilisateur trouvé avec l'ID " + id + ".");
+                System.out.println("====================================\n");
+            }
+
+        } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
 }
