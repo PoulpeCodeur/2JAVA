@@ -14,20 +14,36 @@ public class UserMenu {
         String role = usersRepository.getRole(email);
         int userId = usersRepository.getUserId(email);
 
-        System.out.println("\n--------------------------------------------------");
-        System.out.println("Bienvenue, " + pseudo + " (" + role + ")");
-        System.out.println("--------------------------------------------------");
-        System.out.println("Choisissez l'action que vous souhaitez effectuer :");
-        System.out.println("1. Gestion des stocks (en cours de développement)");
-        System.out.println("2. Voir la liste des utilisateurs");
-        System.out.println("3. Mettre à jour votre compte");
-        System.out.println("4. Quitter");
-        System.out.println("--------------------------------------------------");
-
         Scanner scanner = new Scanner(System.in);
-        int option = scanner.nextInt();
-        scanner.nextLine();
+        int option = -1;
 
+        while (true) {
+            System.out.println("\n--------------------------------------------------");
+            System.out.println("Bienvenue, " + pseudo + " (" + role + ")");
+            System.out.println("--------------------------------------------------");
+            System.out.println("Choisissez l'action que vous souhaitez effectuer :");
+            System.out.println("1. Gestion des stocks (en cours de développement)");
+            System.out.println("2. Voir la liste des utilisateurs");
+            System.out.println("3. Mettre à jour votre compte");
+            System.out.println("4. Quitter");
+            System.out.println("--------------------------------------------------");
+
+            System.out.print("Votre choix : ");
+
+            if (scanner.hasNextInt()) {
+                option = scanner.nextInt();
+                scanner.nextLine();
+
+                if (option >= 1 && option <= 4) {
+                    break;
+                } else {
+                    System.out.println("Option invalide. Veuillez entrer un chiffre entre 1 et 4.");
+                }
+            } else {
+                System.out.println("Caractère invalide. Veuillez entrer un chiffre entre 1 et 4.");
+                scanner.next();
+            }
+        }
 
         switch (option) {
             case 1:
@@ -37,7 +53,6 @@ public class UserMenu {
                 try {
                     System.out.println("\nListe des utilisateurs :");
                     usersRepository.listUsers();
-
                     System.out.println("Retour au menu principal...");
                     menu(email);
                 } catch (SQLException e) {
@@ -47,12 +62,15 @@ public class UserMenu {
                 break;
             case 3:
                 System.out.println("\nMise à jour de votre compte :");
-
                 System.out.print("Nouvel email : ");
                 String newEmail = scanner.nextLine();
+                if (newEmail.matches("^[\\w.-]+@Istore\\.com$")) {
+                    break;
+                } else {
+                    System.out.println("Erreur : Veuillez entrer une adresse email valide !");
+                }
                 System.out.print("Nouveau pseudo : ");
                 String newPseudo = scanner.nextLine();
-
                 System.out.print("Nouveau prénom : ");
                 String newFirstName = scanner.nextLine();
                 System.out.print("Nouveau nom : ");
@@ -63,7 +81,6 @@ public class UserMenu {
                 System.out.println("Retour au menu principal...");
                 menu(email);
                 break;
-
             case 4:
                 break;
 
