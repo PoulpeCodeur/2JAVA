@@ -2,12 +2,15 @@ package repository;
 
 import java.sql.*;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 public class UsersRepository {
 
-    public UsersRepository() {
-    }
+    private static final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public static boolean saveUser(String email, String firstName, String lastName, String pseudo, String password) {
+        String hashedPassword = passwordEncoder.encode(password);
+
         String query = "INSERT INTO USERS (email, first_name, last_name, pseudo, password, role, created_at) " + "VALUES (?, ?, ?, ?, ?, 'USER', NOW())";
         try (Connection connexion = ConnexionRepository.getConnection();
              PreparedStatement preparedStatement = connexion.prepareStatement(query)) {
@@ -16,7 +19,7 @@ public class UsersRepository {
             preparedStatement.setString(2, firstName);
             preparedStatement.setString(3, lastName);
             preparedStatement.setString(4, pseudo);
-            preparedStatement.setString(5, password);
+            preparedStatement.setString(5, hashedPassword);
 
             int rowsInserted = preparedStatement.executeUpdate();
             if (rowsInserted > 0) {
@@ -39,7 +42,7 @@ public class UsersRepository {
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 String storedPassword = resultSet.getString("password");
-                return password.equals(storedPassword);
+                return passwordEncoder.matches(password, storedPassword);
             } else {
                 return false;
             }
