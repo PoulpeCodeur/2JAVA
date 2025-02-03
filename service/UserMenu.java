@@ -64,6 +64,11 @@ public class UserMenu {
                 System.out.println("\nMise à jour de votre compte :");
                 System.out.print("Nouvel email : ");
                 String newEmail = scanner.nextLine();
+                if (newEmail.matches("^[\\w.-]+@Istore\\.com$")) {
+                    break;
+                } else {
+                    System.out.println("Erreur : Veuillez entrer une adresse email valide !");
+                }
                 System.out.print("Nouveau pseudo : ");
                 String newPseudo = scanner.nextLine();
                 System.out.print("Nouveau prénom : ");

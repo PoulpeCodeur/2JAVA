@@ -34,9 +34,24 @@ public class AdminMenu {
         System.out.println("9 - Supprimer Shop");
         System.out.println("10 - Quitter");
         System.out.println("====================================");
+        System.out.print("Choisissez vous souhaitez faire (entre 1 et 10) : ");
 
         Scanner scanner = new Scanner(System.in);
-        int option = scanner.nextInt();
+        int option = -1;
+
+        while (true) {
+            if (scanner.hasNextInt()) {
+                option = scanner.nextInt();
+                if (option >= 1 && option <= 10) {
+                    break;
+                } else {
+                    System.out.println("Nombre invalide, veuillez choisir un numéro entre 1 et 10.");
+                }
+            } else {
+                System.out.println("Veuillez entrer un nombre entier pour l'option (entre 1 et 10) :");
+                scanner.next();
+            }
+        }
 
         switch (option) {
             case 1:
@@ -78,10 +93,8 @@ public class AdminMenu {
                 System.out.println("Retour au menu principal...");
                 menu(email);
                 break;
-
             case 10:
                 break;
-
             default:
                 System.out.println("Option invalide, veuillez réessayer.");
                 menu(email);
@@ -139,8 +152,23 @@ public class AdminMenu {
         System.out.println("Créer un utilisateur :");
         System.out.println("====================================");
 
-        System.out.print("Email du user à ajouter à la whiteliste : ");
-        String mail = scanner.nextLine();
+        String mail;
+        while (true) {
+            System.out.print("Email du user à ajouter à la whiteliste : ");
+            mail = scanner.nextLine();
+            //^ indique le début de la chaine
+            //\w.- correspond à toutes les lettres et chiffre, accepte le point et tiret
+            //@ symble obligatoire
+            //[a-zA-Z\d.-] correspond au nom de domaine
+            //[a-zA-Z]{2,} correspond à l'extension du domaine
+            //$ fin de la chaine
+            if (mail.matches("^[\\w.-]+@Istore\\.com$")) {
+                break;
+            } else {
+                System.out.println("Erreur : Veuillez entrer une adresse email valide !");
+            }
+        }
+
         UsersRepository usersRepository = new UsersRepository();
         int userId = usersRepository.getUserId(email);
         WhitelisteRepository whitelisteRepository = new WhitelisteRepository();
