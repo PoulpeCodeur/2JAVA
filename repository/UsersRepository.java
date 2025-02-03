@@ -1,6 +1,10 @@
 package repository;
 
+import service.UserService;
+
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -194,4 +198,25 @@ public class UsersRepository {
             e.printStackTrace();
         }
     }
+
+    public List<UserService> getUsersNoShop(){
+        String query = "SELECT ID, EMAIL, FIRST_NAME, LAST_NAME,PSEUDO ,ROLE FROM USERS WHERE ID NOT IN (SELECT USER_ID FROM EMPLOYEES);";
+        try (Connection connexion = ConnexionRepository.getConnection();
+             PreparedStatement preparedStatement = connexion.prepareStatement(query);){
+            ResultSet resultSet = preparedStatement.executeQuery();
+            List<UserService> users = new ArrayList<>();
+            while (resultSet.next()) {
+                int id = resultSet.getInt("ID");
+                String email = resultSet.getString("EMAIL");
+                String firstName = resultSet.getString("FIRST_NAME");
+                String lastName = resultSet.getString("LAST_NAME");
+                String pseudo = resultSet.getString("PSEUDO");
+                String role = resultSet.getString("ROLE");
+                users.add(new UserService(id, email, firstName, lastName, pseudo, role));
+            }return users;
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    };
 }

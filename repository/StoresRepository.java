@@ -1,6 +1,10 @@
 package repository;
 
+import service.ShopService;
+
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class StoresRepository {
     public StoresRepository() {
@@ -71,5 +75,24 @@ public class StoresRepository {
             e.printStackTrace();
             throw e;
         }
+    }
+
+    public static List<ShopService> getShopAtribute(){
+        String query = "SELECT NAME ,ID FROM STORES";
+
+        try(Connection connection = ConnexionRepository.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        ResultSet resultSet = preparedStatement.executeQuery()) {
+            List<ShopService> shops = new ArrayList<>();
+            while (resultSet.next()) {
+                String name = resultSet.getString("NAME");
+                int id = resultSet.getInt("ID");
+                shops.add(new ShopService(name,id));
+            }return shops;
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        };
+        return null;
     }
 }

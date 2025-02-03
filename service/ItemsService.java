@@ -1,5 +1,6 @@
 package service;
 
+import repository.InventoryRepository;
 import repository.ItemsRepository;
 
 import java.sql.SQLException;
@@ -7,8 +8,10 @@ import java.util.List;
 import java.util.Scanner;
 
 public class ItemsService {
+    private int id;
     private String name;
     private double price;
+    private int quantity;
 
 
     public ItemsService() {
@@ -18,6 +21,13 @@ public class ItemsService {
 
         this.name = name;
         this.price = price;
+    }
+
+    public ItemsService(int id, String name, double price,int quantity) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.quantity = quantity;
     }
 
     public String getName() {
@@ -69,4 +79,39 @@ public class ItemsService {
         ItemsService itemchoise= items.get(choice-1);
         return itemchoise;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public int displayItemsForShop() throws SQLException {
+        System.out.println("====================================================================");
+        System.out.println("Voici la liste des items qu'elle items souhaiter vous séléctionner ?");
+        System.out.println("====================================================================");
+        InventoryRepository shopRepository = new InventoryRepository();
+        List<ItemsService> items=shopRepository.getItemsNoHaveStore();
+        int i=1;
+        System.out.println("==================================================================");
+        for (ItemsService item : items) {
+            System.out.println(i+"- "+item.getName()+"aux prix de "+item.getPrice()+"pour une quantité de "+item.getQuantity());
+            i++;
+        }
+        System.out.println("==================================================================");
+        Scanner scanner = new Scanner(System.in);
+        int choice = scanner.nextInt();
+        int id = items.get(choice-1).getId();
+        return id;
+    };
 }
