@@ -1,9 +1,6 @@
 package service;
 
-import repository.StoresRepository;
-import repository.UsersRepository;
-import repository.ItemsRepository;
-import repository.WhitelisteRepository;
+import repository.*;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -28,6 +25,7 @@ public class AdminMenu {
         System.out.println("3 - Créer un utilisateur");
         System.out.println("4 - Gestion produit");
         System.out.println("5 - Gestion utilisateur");
+        // ajouter un employer a un shop, ajouter un item a un shop, gérer les stocks
         System.out.println("6 - Gestion Shops");
         System.out.println("7 - Supprimer utilisateur");
         System.out.println("8 - Supprimer produit");
@@ -76,7 +74,8 @@ public class AdminMenu {
                 System.out.println("Feature en cours de développement...");
                 break;
             case 6:
-                System.out.println("Feature en cours de développement...");
+                StoreMenu();
+                menu(email);
                 break;
             case 7:
                 deleteUsers();
@@ -282,6 +281,85 @@ public class AdminMenu {
             default:
                 System.out.println("Option invalide, veuillez réessayer.");
                 ProductMenu();
+                break;
+        }
+    }
+
+    private void StoreMenu() throws SQLException {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("====================================");
+        System.out.println("Que souhaiter vous faire ?");
+        System.out.println("====================================");
+        System.out.println("1. Liste des magasins");
+        System.out.println("2. Ajouter un employer a un shop");
+        System.out.println("3. Ajouter un produit a un shop");
+        System.out.println("4. Suprimer un produit a un shop");
+        System.out.println("5. Suprimer un employer a un shop");
+        System.out.println("6. Gestions des stocks");
+        ShopService shopService = new ShopService();
+        UserService userService = new UserService();
+        EmployeesRepository employeesRepository = new EmployeesRepository();
+        ItemsService itemsService = new ItemsService();
+        InventoryRepository inventoryRepository = new InventoryRepository();
+
+        switch (scanner.nextInt()) {
+            case 1:
+                //return un id
+                // afficher la liste des magasin + choice magasin
+                int id=shopService.displayShop();
+                //menu pour sois lister les employer ou les produits
+                ShopMenuEmployerOrProduct(id);
+                break;
+            case 2:
+                int id2=shopService.displayShop();
+                //list employer + choice employer
+                int id21=userService.DisplayEmployees();
+                employeesRepository.addEmployees(id2,id21);
+                // ajouter un employer au shop
+                break;
+            case 3:
+                //liste shop + choice shop
+                int id3=shopService.displayShop();
+                //liste produit + choice produit
+                int id31=itemsService.displayItemsForShop();
+                //Ajouter un produit au shop
+                inventoryRepository.addItemsInShope(id3,id31);
+                break;
+            case 4:
+                //list des shop + choice magasin
+                int id4=shopService.displayShop();
+                break;
+            case 5:
+                //list des shop + choice magasin
+                int id5=shopService.displayShop();
+                break;
+            case 6:
+                // liste des shop + choice shop
+                int id6=shopService.displayShop();
+                // Menu supp or add stock
+                break;
+        }
+    }
+
+    private void ShopMenuEmployerOrProduct(int shopid) throws SQLException{
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("====================================");
+        System.out.println("Que souhaiter vous faire ?");
+        System.out.println("====================================");
+        System.out.println("1. Liste des employers");
+        System.out.println("2. Liste des produits");
+        System.out.println("====================================");
+        int option = scanner.nextInt();
+        EmployeesRepository employeesRepository = new EmployeesRepository();
+        ItemsRepository itemsRepository = new ItemsRepository();
+        switch (option){
+            case 1:
+                //affichage des employer du shop choisi
+                employeesRepository.displayEmployees(shopid);
+                break;
+            case 2:
+                //affichage des produits du shop choisi
+                itemsRepository.displayItemForShop(shopid);
                 break;
         }
     }

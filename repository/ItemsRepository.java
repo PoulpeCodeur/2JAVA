@@ -96,6 +96,8 @@ public class ItemsRepository {
 
             int rowsAffected = preparedStatement.executeUpdate();
             System.out.println(rowsAffected + " ligne(s) mise(s) à jour.");
+        }catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -110,4 +112,23 @@ public class ItemsRepository {
         }
     }
 
+    public void displayItemForShop(int id) throws SQLException {
+        String query = "SELECT I.NAME, I.PRICE, I.QUANTITY FROM ITEMS I JOIN INVENTORY INV ON I.ID = INV.ID WHERE INV.STORE_ID = ?";
+        try(Connection connexion = ConnexionRepository.getConnection();
+        PreparedStatement preparedStatement = connexion.prepareStatement(query)) {
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            System.out.println("====================================");
+            System.out.println("=========Liste des Produits=========");
+            while (resultSet.next()) {
+                String name = resultSet.getString("NAME");
+                double price = resultSet.getDouble("PRICE");
+                int quantity = resultSet.getInt("QUANTITY");
+                System.out.println(name + ", " + price + ", " + quantity);
+            }
+            System.out.println("====================================");
+        }catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
