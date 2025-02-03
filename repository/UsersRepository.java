@@ -49,6 +49,20 @@ public class UsersRepository {
         }
     }
 
+    public static boolean emailExists(String email) throws SQLException {
+        String query = "SELECT COUNT(*) FROM USERS WHERE email = ?";
+        try (Connection connection = ConnexionRepository.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, email);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt(1) > 0;
+                }
+            }
+        }
+        return false;
+    }
+
     public static String getRole(String email) {
         String query = "SELECT ROLE FROM USERS WHERE email = ?";
         try (Connection connection = ConnexionRepository.getConnection();
