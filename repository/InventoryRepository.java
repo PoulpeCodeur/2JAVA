@@ -33,10 +33,34 @@ public class InventoryRepository {
         return null;
     };
 
+    public List<ItemsService> getItemsHaveStore(int idShop) {
+        String sql="SELECT I.ID, I.NAME, I.PRICE, I.QUANTITY \n" +
+                "FROM ITEMS I " +
+                "JOIN INVENTORY INV ON I.ID = INV.ITEM_ID \n" +
+                "WHERE INV.STORE_ID = ?;";
+        try (Connection connection=ConnexionRepository.getConnection();
+             PreparedStatement preparedStatement=connection.prepareStatement(sql)){
+            preparedStatement.setInt(1, idShop);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            List<ItemsService> items = new ArrayList<>();
+            while (resultSet.next()) {
+                int id = resultSet.getInt("ID");
+                String name = resultSet.getString("NAME");
+                double price = resultSet.getDouble("PRICE");
+                int quantity = resultSet.getInt("QUANTITY");
+                items.add(new ItemsService(id, name, price, quantity));
+            }
+            return items;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public void  addItemsInShope(int shopId,int itemId){
         String sql ="INSERT INTO INVENTORY (STORE_ID,ITEM_ID) VALUES(?,?)";
         try(Connection connection=ConnexionRepository.getConnection();
-        PreparedStatement preparedStatement= connection.prepareStatement(sql)) {
+            PreparedStatement preparedStatement= connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, shopId);
             preparedStatement.setInt(2, itemId);
             preparedStatement.executeUpdate();
@@ -44,4 +68,16 @@ public class InventoryRepository {
             e.printStackTrace();
         }
     };
+
+    public void deletItemsInShope(int shopId,int itemId){
+        String sql ="DELETE FROM INVENTORY WHERE STORE_ID = ? AND ITEM_ID = ?";
+        try (Connection connection=ConnexionRepository.getConnection();
+             PreparedStatement preparedStatement=connection.prepareStatement(sql)){
+            preparedStatement.setInt(1, shopId);
+            preparedStatement.setInt(2, itemId);
+            preparedStatement.executeUpdate();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 }

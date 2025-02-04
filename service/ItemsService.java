@@ -115,4 +115,22 @@ public class ItemsService {
         int id = items.get(choice-1).getId();
         return id;
     };
+    public int displayItemsDeletedForShop(int id) throws SQLException {
+        System.out.println("====================================================================");
+        System.out.println("Voici la liste des items qu'elle items souhaiter vous séléctionner ?");
+        System.out.println("====================================================================");
+        InventoryRepository shopRepository = new InventoryRepository();
+        List<ItemsService> items=shopRepository.getItemsHaveStore(id);
+        int i=1;
+        System.out.println("==================================================================");
+        for (ItemsService item : items) {
+            System.out.println(i+"- "+item.getName()+"aux prix de "+item.getPrice()+"pour une quantité de "+item.getQuantity());
+            i++;
+        }
+        System.out.println("==================================================================");
+        Scanner scanner = new Scanner(System.in);
+        int choice = scanner.nextInt();
+        int itemId = items.get(choice-1).getId();
+        return itemId;
+    };
 }

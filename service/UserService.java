@@ -1,5 +1,6 @@
 package service;
 
+import repository.EmployeesRepository;
 import repository.UsersRepository;
 
 import java.util.List;
@@ -79,6 +80,25 @@ public class UserService {
         System.out.println("============================================================================");
         UsersRepository usersRepository = new UsersRepository();
         List<UserService> users= usersRepository.getUsersNoShop();
+        int i=1;
+        System.out.println("==================================================================");
+        for (UserService user : users) {
+            System.out.println(i+"- "+user.getFirstName()+" "+user.getLastName()+" Role: "+user.getRole());
+            i++;
+        }
+        System.out.println("==================================================================");
+        Scanner scanner = new Scanner(System.in);
+        int employees=scanner.nextInt();
+        int id= users.get(employees-1).getId();
+        return id;
+    };
+
+    public int DisplayEmployeesForShop(int shopId){
+        System.out.println("============================================================================");
+        System.out.println("Voici la liste des Employees qu'elle Employees souhaiter vous séléctionner ?");
+        System.out.println("============================================================================");
+        EmployeesRepository employeesRepository = new EmployeesRepository();
+        List<UserService> users=employeesRepository.EmployeesForDelete(shopId) ;
         int i=1;
         System.out.println("==================================================================");
         for (UserService user : users) {

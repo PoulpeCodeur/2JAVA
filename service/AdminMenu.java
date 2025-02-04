@@ -336,10 +336,14 @@ public class AdminMenu {
             case 4:
                 //list des shop + choice magasin
                 int id4=shopService.displayShop();
+                int id41=itemsService.displayItemsDeletedForShop(id4);
+                inventoryRepository.deletItemsInShope(id4,id41);
                 break;
             case 5:
                 //list des shop + choice magasin
                 int id5=shopService.displayShop();
+                int id51=userService.DisplayEmployeesForShop(id5);
+                employeesRepository.deleteEmployee(id5,id51);
                 break;
             case 6:
                 // liste des shop + choice shop

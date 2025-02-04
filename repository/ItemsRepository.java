@@ -104,7 +104,7 @@ public class ItemsRepository {
     public void updatePrice(double newPrice ,String name) throws SQLException {
         String query = "UPDATE ITEMS SET PRICE = ? WHERE NAME = ?";
         try (Connection connexion = ConnexionRepository.getConnection();
-        PreparedStatement preparedStatement = connexion.prepareStatement(query)) {
+             PreparedStatement preparedStatement = connexion.prepareStatement(query)) {
             preparedStatement.setDouble(1, newPrice);
             preparedStatement.setString(2, name);
             int rowsAffected = preparedStatement.executeUpdate();
@@ -113,9 +113,12 @@ public class ItemsRepository {
     }
 
     public void displayItemForShop(int id) throws SQLException {
-        String query = "SELECT I.NAME, I.PRICE, I.QUANTITY FROM ITEMS I JOIN INVENTORY INV ON I.ID = INV.ID WHERE INV.STORE_ID = ?";
+        String query = "SELECT I.NAME, I.PRICE, I.QUANTITY " +
+                "FROM ITEMS I " +
+                "JOIN INVENTORY INV ON I.ID = INV.ITEM_ID " +
+                "WHERE INV.STORE_ID = ?;";
         try(Connection connexion = ConnexionRepository.getConnection();
-        PreparedStatement preparedStatement = connexion.prepareStatement(query)) {
+            PreparedStatement preparedStatement = connexion.prepareStatement(query)) {
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             System.out.println("====================================");
