@@ -264,4 +264,25 @@ public class UsersRepository {
             throw new RuntimeException(e);
         }
     }
+
+    public List<UserService> getAllUsers() {
+        String query = "SELECT * FROM USERS";
+        List<UserService> users = new ArrayList<>();
+        try(Connection connection=ConnexionRepository.getConnection();
+        PreparedStatement preparedStatement= connection.prepareStatement(query)){
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                int id = resultSet.getInt("ID");
+                String email = resultSet.getString("EMAIL");
+                String firstName = resultSet.getString("FIRST_NAME");
+                String lastName = resultSet.getString("LAST_NAME");
+                String pseudo = resultSet.getString("PSEUDO");
+                String role = resultSet.getString("ROLE");
+                users.add(new UserService(id, email, firstName, lastName, pseudo, role));
+            }
+            return users;
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
 }

@@ -110,5 +110,17 @@ public class UserService {
         int employees=scanner.nextInt();
         int id= users.get(employees-1).getId();
         return id;
+
     };
+    public void displayAllUsers(){
+        System.out.println("============================================================================");
+        System.out.println("Voici la liste des Employees qu'elle Employees souhaiter vous séléctionner ?");
+        System.out.println("============================================================================");
+        UsersRepository usersRepository = new UsersRepository();
+        List<UserService> users=usersRepository.getAllUsers();
+        int i=1;
+        for (UserService user : users) {
+            System.out.println(i+"- "+user.getFirstName()+" "+user.getLastName()+" Role: "+user.getRole()+" Mail: ");
+        }
+    }
 }
