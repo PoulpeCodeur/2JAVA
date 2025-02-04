@@ -68,7 +68,7 @@ public class AdminMenu {
                 menu(email);
                 break;
             case 4:
-                ProductMenu();
+                ProductMenu(email);
                 break;
             case 5:
                 System.out.println("Feature en cours de développement...");
@@ -244,7 +244,7 @@ public class AdminMenu {
 
     }
 
-    private void ProductMenu() throws SQLException {
+    private void ProductMenu(String email) throws SQLException {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("====================================");
@@ -252,38 +252,46 @@ public class AdminMenu {
         System.out.println("====================================");
         System.out.println("1 - Changer le nom d'un produit");
         System.out.println("2 - Changer le prix d'un produit");
+        System.out.println("====================================");
+
         ItemsService itemsService = new ItemsService();
         ItemsRepository itemsRepository = new ItemsRepository();
-        List<ItemsService> listeItems=itemsRepository.getAtributItems();
+        List<ItemsService> listeItems = itemsRepository.getAtributItems();
 
         int option = scanner.nextInt();
         scanner.nextLine();
         switch (option) {
             case 1:
-                ItemsService item=itemsService.DisplayItems(listeItems);
-                String name=item.getName();
-                System.out.println("Veuillez rentrez le nouveaux nom du produit :");
+                ItemsService item = itemsService.DisplayItems(listeItems);
+                String name = item.getName();
+                System.out.println("Veuillez rentrer le nouveau nom du produit :");
                 String newName = scanner.nextLine();
 
                 ItemsRepository itemRepository = new ItemsRepository();
-                itemRepository.updateName(name,newName);
+                itemRepository.updateName(name, newName);
 
+                menu(email);
                 break;
+
             case 2:
-                ItemsService items=itemsService.DisplayItems(listeItems);
-                String names=items.getName();
-                System.out.println("Veuillez rentrez le nouveaux prix du produit :");
+                ItemsService items = itemsService.DisplayItems(listeItems);
+                String names = items.getName();
+                System.out.println("Veuillez rentrer le nouveau prix du produit :");
                 int newPrice = scanner.nextInt();
 
                 ItemsRepository itemsRepository1 = new ItemsRepository();
-                itemsRepository1.updatePrice(newPrice,names);
+                itemsRepository1.updatePrice(newPrice, names);
+
+                menu(email);
                 break;
+
             default:
                 System.out.println("Option invalide, veuillez réessayer.");
-                ProductMenu();
+                ProductMenu(email);
                 break;
         }
     }
+
 
     private void StoreMenu() throws SQLException {
         Scanner scanner = new Scanner(System.in);

@@ -199,10 +199,55 @@ public class UsersRepository {
         }
     }
 
+    public static void deleteAccount(String email) {
+        int userIdConnected = getUserId(email);
+
+        String query = "SELECT ID FROM USERS WHERE EMAIL = ?";
+        try (Connection connexion = ConnexionRepository.getConnection();
+             PreparedStatement preparedStatement = connexion.prepareStatement(query)) {
+
+            preparedStatement.setString(1, email);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                int userIdRequested = resultSet.getInt("ID");
+
+                if (userIdConnected == userIdRequested) {
+                    String deleteQuery = "DELETE FROM USERS WHERE ID = ?";
+                    try (PreparedStatement deleteStatement = connexion.prepareStatement(deleteQuery)) {
+                        deleteStatement.setInt(1, userIdRequested);
+                        int rowsDeleted = deleteStatement.executeUpdate();
+
+                        if (rowsDeleted > 0) {
+                            System.out.println("\n====================================");
+                            System.out.println("Votre compte a été supprimé avec succès.");
+                            System.out.println("====================================\n");
+                        } else {
+                            System.out.println("\n====================================");
+                            System.out.println("Échec de la suppression du compte.");
+                            System.out.println("====================================\n");
+                        }
+                    }
+                } else {
+                    System.out.println("\n====================================");
+                    System.out.println("Vous ne pouvez pas supprimer un autre compte.");
+                    System.out.println("====================================\n");
+                }
+            } else {
+                System.out.println("\n====================================");
+                System.out.println("Utilisateur non trouvé.");
+                System.out.println("====================================\n");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     public List<UserService> getUsersNoShop(){
         String query = "SELECT ID, EMAIL, FIRST_NAME, LAST_NAME,PSEUDO ,ROLE FROM USERS WHERE ID NOT IN (SELECT USER_ID FROM EMPLOYEES);";
         try (Connection connexion = ConnexionRepository.getConnection();
-             PreparedStatement preparedStatement = connexion.prepareStatement(query);){
+             PreparedStatement preparedStatement = connexion.prepareStatement(query)){
             ResultSet resultSet = preparedStatement.executeQuery();
             List<UserService> users = new ArrayList<>();
             while (resultSet.next()) {
@@ -218,5 +263,5 @@ public class UsersRepository {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-    };
+    }
 }

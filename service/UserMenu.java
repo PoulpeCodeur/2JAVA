@@ -25,7 +25,8 @@ public class UserMenu {
             System.out.println("1. Gestion des stocks (en cours de développement)");
             System.out.println("2. Voir la liste des utilisateurs");
             System.out.println("3. Mettre à jour votre compte");
-            System.out.println("4. Quitter");
+            System.out.println("4. Supprimer son compte");
+            System.out.println("5. Quitter");
             System.out.println("--------------------------------------------------");
 
             System.out.print("Votre choix : ");
@@ -34,7 +35,7 @@ public class UserMenu {
                 option = scanner.nextInt();
                 scanner.nextLine();
 
-                if (option >= 1 && option <= 4) {
+                if (option >= 1 && option <= 5) {
                     break;
                 } else {
                     System.out.println("Option invalide. Veuillez entrer un chiffre entre 1 et 4.");
@@ -82,8 +83,9 @@ public class UserMenu {
                 menu(email);
                 break;
             case 4:
+                UsersRepository.deleteAccount(email);
+            case 5:
                 break;
-
             default:
                 System.out.println("Option invalide. Veuillez choisir une option valide.");
                 break;

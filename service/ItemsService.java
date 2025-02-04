@@ -66,7 +66,8 @@ public class ItemsService {
     public ItemsService DisplayItems(List<ItemsService> items) throws SQLException {
         int i=1;
         for (ItemsService item : items) {
-            System.out.println(i+"- "+"Product: "+item.getName()+"aux prix de "+item.getPrice());
+            System.out.println("====================================");
+            System.out.println(i+" - "+"Produit : "+item.getName()+" - Prix : "+item.getPrice() + "€");
             i++;
         }
         ItemsService item=choiseItems(items);
@@ -74,7 +75,7 @@ public class ItemsService {
     }
     public ItemsService choiseItems(List<ItemsService> items) throws SQLException {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Qu'elle items souhaiter vous séléctionner");
+        System.out.println("Quel item souhaitez vous sélectionner ? ");
         int choice = scanner.nextInt();
         ItemsService itemchoise= items.get(choice-1);
         return itemchoise;
@@ -98,14 +99,14 @@ public class ItemsService {
 
     public int displayItemsForShop() throws SQLException {
         System.out.println("====================================================================");
-        System.out.println("Voici la liste des items qu'elle items souhaiter vous séléctionner ?");
+        System.out.println("Voici la liste des items, quel item souhaitez vous sélectionner ?");
         System.out.println("====================================================================");
         InventoryRepository shopRepository = new InventoryRepository();
         List<ItemsService> items=shopRepository.getItemsNoHaveStore();
         int i=1;
         System.out.println("==================================================================");
         for (ItemsService item : items) {
-            System.out.println(i+"- "+item.getName()+"aux prix de "+item.getPrice()+"pour une quantité de "+item.getQuantity());
+            System.out.println(i+"- "+item.getName()+" au prix de "+item.getPrice()+"pour une quantité de "+item.getQuantity());
             i++;
         }
         System.out.println("==================================================================");
