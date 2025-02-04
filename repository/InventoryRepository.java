@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class InventoryRepository {
 
@@ -75,6 +76,37 @@ public class InventoryRepository {
              PreparedStatement preparedStatement=connection.prepareStatement(sql)){
             preparedStatement.setInt(1, shopId);
             preparedStatement.setInt(2, itemId);
+            preparedStatement.executeUpdate();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void addStockInShope(int itemId){
+        String sql="UPDATE ITEMS SET QUANTITY = QUANTITY + ? WHERE ID = ?";
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Séléctionner la quantitté que vous vouler ajouter !");
+        int quantity = scanner.nextInt();
+        try (Connection connection=ConnexionRepository.getConnection();
+        PreparedStatement preparedStatement= connection.prepareStatement(sql)){
+            preparedStatement.setInt(1, quantity);
+            preparedStatement.setInt(2, itemId);
+            preparedStatement.executeUpdate();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void delStockInShope(int itemId){
+        String sql="UPDATE ITEMS SET QUANTITY = CASE WHEN QUANTITY - ? < 0 THEN 0 ELSE QUANTITY - ? END WHERE ID = ?;";
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Séléctionner la quantitté que vous vouler enlever !");
+        int quantity = scanner.nextInt();
+        try (Connection connection=ConnexionRepository.getConnection();
+             PreparedStatement preparedStatement= connection.prepareStatement(sql)){
+            preparedStatement.setInt(1, quantity);
+            preparedStatement.setInt(2, quantity);
+            preparedStatement.setInt(3, itemId);
             preparedStatement.executeUpdate();
         }catch (Exception e){
             e.printStackTrace();

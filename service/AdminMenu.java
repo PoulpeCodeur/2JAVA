@@ -349,6 +349,7 @@ public class AdminMenu {
                 // liste des shop + choice shop
                 int id6=shopService.displayShop();
                 // Menu supp or add stock
+                MenuGestionStock(id6);
                 break;
         }
     }
@@ -372,6 +373,29 @@ public class AdminMenu {
             case 2:
                 //affichage des produits du shop choisi
                 itemsRepository.displayItemForShop(shopid);
+                break;
+        }
+    }
+
+    public void MenuGestionStock(int shopId) throws SQLException{
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("====================================");
+        System.out.println("Que souhaiter vous faire ?");
+        System.out.println("====================================");
+        System.out.println("1. Augmenter le stock d'un produit ");
+        System.out.println("2. Retirer le stock d'un produit ");
+        System.out.println("====================================");
+        int option = scanner.nextInt();
+        ItemsService itemsService = new ItemsService();
+        InventoryRepository inventoryRepository = new InventoryRepository();
+        switch (option){
+            case 1:
+                int itemAdd=itemsService.displayItemsDeletedForShop(shopId);
+                inventoryRepository.addStockInShope(itemAdd);
+                break;
+            case 2:
+                int itemSup=itemsService.displayItemsDeletedForShop(shopId);
+                inventoryRepository.delStockInShope(itemSup);
                 break;
         }
     }

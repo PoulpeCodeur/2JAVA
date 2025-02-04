@@ -124,7 +124,7 @@ public class ItemsService {
         int i=1;
         System.out.println("==================================================================");
         for (ItemsService item : items) {
-            System.out.println(i+"- "+item.getName()+"aux prix de "+item.getPrice()+"pour une quantité de "+item.getQuantity());
+            System.out.println(i+"- "+item.getName()+" aux prix de "+item.getPrice()+"pour une quantité de "+item.getQuantity());
             i++;
         }
         System.out.println("==================================================================");
