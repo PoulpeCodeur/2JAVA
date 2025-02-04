@@ -132,5 +132,5 @@ public class ItemsService {
         int choice = scanner.nextInt();
         int itemId = items.get(choice-1).getId();
         return itemId;
-    };
+    }
 }

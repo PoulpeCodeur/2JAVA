@@ -84,6 +84,7 @@ public class UserMenu {
                 System.out.println("Retour au menu principal...");
                 menu(email);
                 break;
+
             case 4:
                 UsersRepository.deleteAccount(email);
             case 5:
