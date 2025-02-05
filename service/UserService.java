@@ -112,7 +112,7 @@ public class UserService {
         return id;
 
     };
-    public void displayAllUsers(){
+    public int displayAllUsers(){
         System.out.println("============================================================================");
         System.out.println("Voici la liste des Employees qu'elle Employees souhaiter vous séléctionner ?");
         System.out.println("============================================================================");
@@ -121,6 +121,11 @@ public class UserService {
         int i=1;
         for (UserService user : users) {
             System.out.println(i+"- "+user.getFirstName()+" "+user.getLastName()+" Role: "+user.getRole()+" Mail: ");
+            i++;
         }
+        Scanner scanner = new Scanner(System.in);
+        int user=scanner.nextInt();
+        int id= users.get(user-1).getId();
+        return id;
     }
 }

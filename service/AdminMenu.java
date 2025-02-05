@@ -24,7 +24,7 @@ public class AdminMenu {
         System.out.println("2 - Créer un Shop");
         System.out.println("3 - Créer un utilisateur");
         System.out.println("4 - Gestion produit");
-        System.out.println("5 - Gestion utilisateur");
+        System.out.println("5 - Modification utilisateur");
         // ajouter un employer a un shop, ajouter un item a un shop, gérer les stocks
         System.out.println("6 - Gestion Shops");
         System.out.println("7 - Supprimer utilisateur");
@@ -33,6 +33,7 @@ public class AdminMenu {
         System.out.println("10 - Quitter");
         System.out.println("====================================");
         System.out.print("Choisissez vous souhaitez faire (entre 1 et 10) : ");
+        UserService userService = new UserService();
 
         Scanner scanner = new Scanner(System.in);
         int option = -1;
@@ -71,7 +72,9 @@ public class AdminMenu {
                 ProductMenu(email);
                 break;
             case 5:
-                System.out.println("Feature en cours de développement...");
+                int id=userService.displayAllUsers();
+                ModificateUser(id);
+                menu(email);
                 break;
             case 6:
                 StoreMenu();
@@ -398,5 +401,30 @@ public class AdminMenu {
                 inventoryRepository.delStockInShope(itemSup);
                 break;
         }
+    }
+    //public void updateUser(int userId, String newEmail, String newFirstName, String newLastName, String newPseudo)
+
+    public void ModificateUser(int userId) throws SQLException {
+        UsersRepository usersRepository = new UsersRepository();
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("\nMise à jour de votre compte :");
+        System.out.print("Nouvel email : ");
+        String newEmail = scanner.nextLine();
+
+        if (!newEmail.matches("^[\\w.-]+@Istore\\.com$")) {
+            System.out.println("Erreur : Veuillez entrer une adresse email valide !");
+            return;
+        }
+
+        System.out.print("Nouveau pseudo : ");
+        String newPseudo = scanner.nextLine();
+        System.out.print("Nouveau prénom : ");
+        String newFirstName = scanner.nextLine();
+        System.out.print("Nouveau nom : ");
+        String newLastName = scanner.nextLine();
+
+        usersRepository.updateUser(userId, newEmail, newFirstName, newLastName, newPseudo);
+        System.out.println("Vos informations ont été mises à jour avec succès.");
+        System.out.println("Retour au menu principal...");
     }
 }
